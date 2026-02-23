@@ -48,7 +48,7 @@ Each technology MUST define:
 
 ```yaml
 - id: string # required, unique within Stackfile
-  parent: string # optional (omit for root)
+  parent: string # optional, required only for non-root technologies
   detect: # required
     include: [] # required
 ```
@@ -67,7 +67,7 @@ description: string # optional
 - `id` MUST be unique within the resolved definition set.
 - `id` MUST be stable and deterministic.
 - If present, `parent` MUST reference an existing technology id.
-- Exactly one technology MUST omit `parent` (the root).
+- Technologies that omit `parent` are roots.
 - Hierarchy MUST be acyclic.
 
 ---
@@ -181,11 +181,12 @@ Given:
 Classification algorithm:
 
 1.  Validate hierarchy:
-    - Single root
-    - No cycles
-    - All parents exist
 
-2.  Sort technologies by depth (root first).
+- At least one root
+  - No cycles
+  - All parents exist
+
+2.  Sort technologies by depth (roots first).
 
 3.  For each file:
     - Evaluate all `include` patterns.
@@ -207,7 +208,6 @@ Resolution MUST NOT depend on evaluation order.
 A Stackfile is invalid if:
 
 - `version` is missing or unsupported
-- Multiple roots exist
 - No root exists
 - Cyclic inheritance exists
 - Parent references missing technology
@@ -224,20 +224,7 @@ Validation MUST occur before classification.
 version: "0.1"
 
 technologies:
-  - id: artifact
-    detect:
-      include:
-        - "**/*"
-
-  - id: language
-    parent: artifact
-    detect:
-      include:
-        - "**/*.ts"
-        - "**/*.js"
-
-  - id: typescript
-    parent: language
+  - id: typescript # root technology - no parent
     detect:
       include:
         - "**/*.ts"
