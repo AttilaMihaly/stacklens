@@ -182,9 +182,8 @@ Classification algorithm:
 
 1.  Validate hierarchy:
 
-- At least one root
-  - No cycles
-  - All parents exist
+- No cycles
+- All parents exist
 
 2.  Sort technologies by depth (roots first).
 
