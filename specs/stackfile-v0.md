@@ -48,7 +48,7 @@ Each technology MUST define:
 
 ```yaml
 - id: string # required, unique within Stackfile
-  parent: string # optional, required only for non-root technologies
+  parent: string # optional; omit for root technologies
   detect: # required
     include: [] # required
 ```
@@ -207,7 +207,6 @@ Resolution MUST NOT depend on evaluation order.
 A Stackfile is invalid if:
 
 - `version` is missing or unsupported
-- No root exists
 - Cyclic inheritance exists
 - Parent references missing technology
 - Duplicate technology ids exist
